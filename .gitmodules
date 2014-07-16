@@ -1,0 +1,4 @@
+[submodule "picotcp"]
+	path = picotcp
+	url = git://github.com/tass-belgium/picotcp
+	branch = thos
