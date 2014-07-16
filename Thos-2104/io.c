@@ -11,17 +11,17 @@ int thos_setup(void)
 	return 0;
 }
 
-void putc(int c)
+void thos_putc(int c)
 {
 	if (c == '\n')
-		putc('\r');
+		thos_putc('\r');
 	while ( !(regs[REG_U0LSR] & REG_U0LSR_THRE) )
 		;
 	regs[REG_U0THR] = c;
 }
 
-void puts(char *s)
+void thos_puts(char *s)
 {
 	while (*s)
-		putc (*s++);
+		thos_putc (*s++);
 }

@@ -10,7 +10,7 @@ OBJCOPY         = $(CROSS_COMPILE)objcopy
 OBJDUMP         = $(CROSS_COMPILE)objdump
 
 # Using thumb for version 7 ARM core:
-CFLAGS  = -march=armv7-m -mthumb -g -Wall -ffreestanding -O2
+CFLAGS  = -march=armv7-m -mthumb -g -Wall -ffreestanding -O2 
 ASFLAGS = -march=armv7-m -mthumb -g -Wall
 
 # Use our own linker script
@@ -20,12 +20,23 @@ LDFLAGS = -T thos.lds
 TSRC = $(wildcard task-*.c)
 TOBJ = $(TSRC:.c=.o)
 
+ifeq ($(PICOTCP),y)
+  CFLAGS+=-DPICOTCP -I./build/include/
+  LIBS+=./build/lib/libpicotcp.a
+endif
+
+
 # Our target
 thos.bin: thos
 	$(OBJCOPY) -O binary $^ $@
 
-thos: boot.o io.o main.o $(TOBJ)
-	$(LD) $(LDFLAGS) $^ -o $@
+thos: $(LIBS) boot.o io.o main.o $(TOBJ)
+	$(LD) $(LDFLAGS) $^ $(LIBS) -o $@
 
 clean:
-	rm -f thos.bin thos *.o *~
+	rm -f thos.bin thos *.o *~ 
+	rm -rf build
+
+./build/lib/libpicotcp.a:
+	make -C picotcp CROSS_COMPILE=$(CROSS_COMPILE) PREFIX=$(PWD)/build THOS=1
+

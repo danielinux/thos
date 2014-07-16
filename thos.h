@@ -2,8 +2,8 @@
 extern int thos_main(void);
 extern int thos_setup(void);
 
-extern void putc(int c);
-extern void puts(char *s);
+extern void thos_putc(int c);
+extern void thos_puts(char *s);
 
 extern volatile unsigned long jiffies;
 

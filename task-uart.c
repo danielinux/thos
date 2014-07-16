@@ -4,7 +4,7 @@
 static void *uart_out(void *arg)
 {
 	char *s = arg;
-	puts(s);
+	thos_puts(s);
 	return arg;
 }
 
